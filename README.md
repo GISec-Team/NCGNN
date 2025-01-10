@@ -31,7 +31,7 @@ python main.py -D computers -M NCGCN
 - weight decay: [0, 5e-5, 1e-4, 5e-4, 1e-3]
 - dropout rate: [0, 0.9] with 0.1 interval
 - hop k: [1, 2]
-- Threshold T: [3, 4, 5, 6, 7]
+- Threshold T: [0.3, 0.4, 0.5, 0.6, 0.7]
 - Add self-loop or not: [True, False]
 
 ### 5 Citation

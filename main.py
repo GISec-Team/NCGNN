@@ -108,19 +108,19 @@ def cal_nc(nei_dict, y, thres=2., use_tensor=True):
 if __name__ == "__main__":
     # PARSER BLOCK
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', '-D', type=str, default='pubmed')
+    parser.add_argument('--dataset', '-D', type=str, default='computers')
     parser.add_argument('--baseseed', '-S', type=int, default=42)
-    parser.add_argument('--hidden', '-H', type=int, default=64)
-    parser.add_argument('--lr', type=float, default=0.1)
-    parser.add_argument('--wd', type=float, default=0.0001)
-    parser.add_argument('--dp1', type=float, default=0.5)
-    parser.add_argument('--dp2', type=float, default=0.5)
+    parser.add_argument('--hidden', '-H', type=int, default=512)
+    parser.add_argument('--lr', type=float, default=5e-2)
+    parser.add_argument('--wd', type=float, default=5e-5)
+    parser.add_argument('--dp1', type=float, default=0.2)
+    parser.add_argument('--dp2', type=float, default=0.6)
     parser.add_argument('--act', type=str, default='relu')
-    parser.add_argument('--hops', type=int, default=1)
+    parser.add_argument('--hops', type=int, default=2)
     parser.add_argument('--forcing', type=int, default=0, choices=[0, 1])
-    parser.add_argument('--addself', '-A', type=int, default=1, choices=[0, 1])
+    parser.add_argument('--addself', '-A', type=int, default=0, choices=[0, 1])
     parser.add_argument('--model', '-M', type=str, default='NCGNN')
-    parser.add_argument('--threshold', '-T', type=float, default=3)
+    parser.add_argument('--threshold', '-T', type=float, default=0.7)
     args = parser.parse_args()
     dataset, data = DataLoader(args.dataset)
     print(f"load {args.dataset} successfully!")
@@ -131,8 +131,9 @@ if __name__ == "__main__":
     args_dict = vars(args)
     args = argparse.Namespace(**args_dict)
 
-    args.threshold = 2 ** (args.threshold / 10 * np.log2(dataset.num_classes))
     print(args)
+    args.threshold = 2 ** (args.threshold * np.log2(dataset.num_classes))
+
 
     train_rate = 0.6
     val_rate = 0.2
@@ -151,7 +152,7 @@ if __name__ == "__main__":
     # 10 times rand part
     neigh_dict = cal_nei_index(data.edge_index, args.hops, dataset.num_nodes)
     print('indexing finished')
-    for rand in trange(10):
+    for rand in trange(5):
         # training settings
         seed_everything(args.baseseed + rand)
         data.cc_mask = torch.ones(dataset.num_nodes).float()
@@ -184,6 +185,7 @@ if __name__ == "__main__":
 
         accs.append(best_acc)
         test_accs.append(final_test_acc)
+        print(final_test_acc)
     accs = torch.tensor(accs)
     test_accs = torch.tensor(test_accs)
     print(f'{args.dataset} valid_acc: {100 * accs.mean().item():.2f} ± {100 * accs.std().item():.2f}')
