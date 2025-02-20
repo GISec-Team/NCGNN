@@ -185,7 +185,6 @@ if __name__ == "__main__":
 
         accs.append(best_acc)
         test_accs.append(final_test_acc)
-        print(final_test_acc)
     accs = torch.tensor(accs)
     test_accs = torch.tensor(test_accs)
     print(f'{args.dataset} valid_acc: {100 * accs.mean().item():.2f} ± {100 * accs.std().item():.2f}')
