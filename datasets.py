@@ -179,12 +179,12 @@ def DataLoader(name):
         return dataset, dataset.data
 
     elif name in ['cora', 'citeseer', 'pubmed']:
-        root_path = '../'
+        root_path = './data'
         # path = osp.join(root_path, 'data', name)
         path = osp.join(root_path, 'data')
         dataset = Planetoid(path, name, pre_transform=T.NormalizeFeatures())
     elif name in ['computers', 'photo']:
-        root_path = '../'
+        root_path = '.'
         path = osp.join(root_path, 'data', name)
         dataset = Amazon(path, name, pre_transform=T.NormalizeFeatures())
     elif name in ['chameleon', 'squirrel']:
