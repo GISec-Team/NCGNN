@@ -42,7 +42,7 @@ If you find this work useful, please cite our paper:
 ```
 @article{zhou2025ncgnn,
   title={Clarify Confused Nodes via Separated Learning},
-  author={Jiajun Zhou, Shengbo Gong, Xuanze Chen, Chenxuan Xie, Shanqing Yu, Qi Xuan and Xiaoniu Yang},
+  author={Zhou, Jiajun and Gong, Shengbo and Chen, Xuanze and Xie, Chenxuan and Yu, Shanqing and Xuan, Qi and Yang, Xiaoniu},
   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
   year={2025}
 }
