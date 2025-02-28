@@ -1,5 +1,9 @@
 # Clarify Confused Nodes via Separated Learning
 In this paper, we first propose a new metric, termed Neighborhood Confusion (NC), to facilitate a more reliable separation of nodes. These pave the way for Neighborhood Confusion-guided Graph Convolutional Network (NCGCN), in which nodes are grouped by their NC values and accept intra-group weight sharing and message passing. 
+
+- [Arxiv](https://arxiv.org/pdf/2306.02285)
+- [IEEE](https://ieeexplore.ieee.org/abstract/document/10840207/)
+
 ### 1 Overview of Model Architecture and Performance
 
 ![](images/architecture.png)
