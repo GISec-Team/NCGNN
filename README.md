@@ -44,6 +44,9 @@ If you find this work useful, please cite our paper:
   title={Clarify Confused Nodes via Separated Learning},
   author={Zhou, Jiajun and Gong, Shengbo and Chen, Xuanze and Xie, Chenxuan and Yu, Shanqing and Xuan, Qi and Yang, Xiaoniu},
   journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
-  year={2025}
+  year={2025},
+  volume={47},
+  number={4},
+  pages={2882-2896}
 }
 ```
