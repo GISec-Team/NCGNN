@@ -108,19 +108,20 @@ def cal_nc(nei_dict, y, thres=2., use_tensor=True):
 if __name__ == "__main__":
     # PARSER BLOCK
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', '-D', type=str, default='computers')
+    parser.add_argument('--dataset', '-D', type=str, default='photo')
     parser.add_argument('--baseseed', '-S', type=int, default=42)
     parser.add_argument('--hidden', '-H', type=int, default=512)
-    parser.add_argument('--lr', type=float, default=0.1)
-    parser.add_argument('--wd', type=float, default=0.0001)
-    parser.add_argument('--dp1', type=float, default=0.2)
-    parser.add_argument('--dp2', type=float, default=0.2)
+    parser.add_argument('--lr', type=float, default=1e-2)
+    parser.add_argument('--wd', type=float, default=5e-5)
+    parser.add_argument('--dp1', type=float, default=0)
+    parser.add_argument('--dp2', type=float, default=0.9)
     parser.add_argument('--act', type=str, default='relu')
-    parser.add_argument('--hops', type=int, default=2)
+    parser.add_argument('--hops', type=int, default=1)
     parser.add_argument('--forcing', type=int, default=0, choices=[0, 1])
-    parser.add_argument('--addself', '-A', type=int, default=0, choices=[0, 1])
-    parser.add_argument('--model', '-M', type=str, default='NCGNN')
-    parser.add_argument('--threshold', '-T', type=float, default=0.7)
+    parser.add_argument('--addself', '-A', type=int, default=1, choices=[0, 1])
+    parser.add_argument('--model', '-M', type=str, default='NCSAGE')
+    parser.add_argument('--threshold', '-T', type=float, default=0.3)
+    parser.add_argument('--finalagg', type=str, default='add')
     args = parser.parse_args()
     dataset, data = DataLoader(args.dataset)
     print(f"load {args.dataset} successfully!")
@@ -146,7 +147,11 @@ if __name__ == "__main__":
     val_lb = int(round(val_rate * num_nodes))
     accs, test_accs = [], []
     ep_list = []
-    model = NCGCN(dataset.num_features, dataset.num_classes, args).to(Config.device)
+
+    if args.model == 'NCGCN':
+        model = NCGCN(dataset.num_features, dataset.num_classes, args).to(Config.device)
+    elif args.model == 'NCSAGE':
+        model = NCSAGE(dataset.num_features, dataset.num_classes, args).to(Config.device)
     data.x = SparseTensor.from_dense(data.x)
 
     # 10 times rand part
@@ -182,7 +187,7 @@ if __name__ == "__main__":
                 es_count -= 1
             if es_count <= 0:
                 break
-
+            print(f"loss: {loss}| test acc: {test_acc}")
         accs.append(best_acc)
         test_accs.append(final_test_acc)
     accs = torch.tensor(accs)
